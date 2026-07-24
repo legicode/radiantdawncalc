@@ -569,20 +569,18 @@ function updateTable(checked, sHP=36, sStr=20, sMag=5, sSkl=20, sSpd=20, sLck=20
 			else if (caps2.get(char) != undefined){
 				stat = Math.min(stat, caps2.get(char)[i]);
 			}
+			else if ([1, 2, 3, 4, 6, 7].includes(i) && laguz.includes(char) && transformation.value == "Transformed"){
+				stat = Math.min(stat, caps3.get(char)[i]) * 2;
+			}
+			else if ([1, 2, 3, 4, 6, 7].includes(i) && laguz.includes(char) && transformation.value == "Wildheart"){
+				stat = Math.floor(Math.min(stat, caps3.get(char)[i]) * 1.5);
+			}
 			else {
 				stat = Math.min(stat, caps3.get(char)[i]);
 			}
 		}
-		if ([1, 2, 3, 4, 6, 7].includes(i)){
-			if (laguz.includes(char) && transformation.value == "Transformed"){
-				stat *= 2;
-			}
-			else if (laguz.includes(char) && transformation.value == "Wildheart"){
-				stat = Math.floor(stat * 1.5);
-			}
-		}
 		if (i < 8){
-			if (this["transfer"+stats[i]].checked && char == "Sothe"){
+			if (char == "Sothe" && this["transfer"+stats[i]].checked){
 				this["Base"+(stats[i])].innerHTML = "<select id=\"sothe"+stats[i]+"\" onChange=\"updateTable(true, sotheHP.value, sotheSTR.value, sotheMAG.value, sotheSKL.value, sotheSPD.value, sotheLCK.value, sotheDEF.value, sotheRES.value)\"></select>"
 				let PoRbase = 5;
 				let PoRcap = 20;
@@ -665,6 +663,22 @@ function updateTable(checked, sHP=36, sStr=20, sMag=5, sSkl=20, sSpd=20, sLck=20
 		currentLCK = charBases.get(char)[6];
 		currentDEF = charBases.get(char)[7];
 		currentRES = charBases.get(char)[8];
+	}
+	if (laguz.includes(char) && transformation.value == "Transformed"){
+		currentSTR *= 2;
+		currentMAG *= 2;
+		currentSKL *= 2;
+		currentSPD *= 2;
+		currentDEF *= 2;
+		currentRES *= 2;
+	}
+	else if (laguz.includes(char) && transformation.value == "Wildheart"){
+		currentSTR = Math.floor(currentSTR * 1.5);
+		currentMAG = Math.floor(currentMAG * 1.5);
+		currentSKL = Math.floor(currentSKL * 1.5);
+		currentSPD = Math.floor(currentSPD * 1.5);
+		currentDEF = Math.floor(currentDEF * 1.5);
+		currentRES = Math.floor(currentRES * 1.5);
 	}
 	currentCON = charBases.get(char)[9];
 	currentMOV = charBases.get(char)[10];
@@ -763,14 +777,6 @@ function updateTable(checked, sHP=36, sStr=20, sMag=5, sSkl=20, sSpd=20, sLck=20
 					this["current"+stats[j]] = caps2.get(char)[j];
 				}
 				let stat = this["current"+stats[j]];
-				if ([1, 2, 3, 4, 6, 7].includes(j)){
-					if (laguz.includes(char) && transformation.value == "Transformed"){
-						stat *= 2;
-					}
-					else if (laguz.includes(char) && transformation.value == "Wildheart"){
-						stat = Math.floor(stat * 1.5);
-					}
-				}
 				if (this["current"+stats[j]] == caps2.get(char)[j]){
 					this["T2level"+(i+2).toString()+stats[j]].innerHTML = "<b>"+stat+"</b>";
 				}
@@ -824,25 +830,47 @@ function updateTable(checked, sHP=36, sStr=20, sMag=5, sSkl=20, sSpd=20, sLck=20
 		con = row.insertCell(9).innerHTML = "<span id=\"T3level"+(i+2).toString()+"CON\"></span>";
 		mov = row.insertCell(10).innerHTML = "<span id=\"T3level"+(i+2).toString()+"MOV\"></span>";
 		for (let j = 0; j < 10; j++){
-			this["current"+stats[j]] += charGrowths.get(char)[j] / 100;
-			this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
-			if (this["current"+stats[j]] >= caps3.get(char)[j]){
-				this["current"+stats[j]] = caps3.get(char)[j];
-			}
-			let stat = this["current"+stats[j]];
-			if ([1, 2, 3, 4, 6, 7].includes(j)){
-				if (laguz.includes(char) && transformation.value == "Transformed"){
-					stat *= 2;
+			if ([1, 2, 3, 4, 6, 7].includes(j) && laguz.includes(char) && transformation.value == "Transformed"){
+				this["current"+stats[j]] += charGrowths.get(char)[j] / 50;
+				this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
+				if (this["current"+stats[j]] >= caps3.get(char)[j] * 2){
+					this["current"+stats[j]] = caps3.get(char)[j] * 2;
 				}
-				else if (laguz.includes(char) && transformation.value == "Wildheart"){
-					stat = Math.floor(stat * 1.5);
+				let stat = this["current"+stats[j]];
+				if (this["current"+stats[j]] == caps3.get(char)[j] * 2){
+					this["T3level"+(i+2).toString()+stats[j]].innerHTML = "<b>"+stat+"</b>";
+				}
+				else{
+					this["T3level"+(i+2).toString()+stats[j]].innerHTML = stat;
 				}
 			}
-			if (this["current"+stats[j]] == caps3.get(char)[j]){
-				this["T3level"+(i+2).toString()+stats[j]].innerHTML = "<b>"+stat+"</b>";
+			else if ([1, 2, 3, 4, 6, 7].includes(j) && laguz.includes(char) && transformation.value == "Wildheart"){
+				this["current"+stats[j]] += charGrowths.get(char)[j] * 1.5 / 100;
+				this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
+				if (this["current"+stats[j]] >= caps3.get(char)[j] * 1.5){
+					this["current"+stats[j]] = caps3.get(char)[j] * 1.5;
+				}
+				let stat = this["current"+stats[j]];
+				if (this["current"+stats[j]] == caps3.get(char)[j] * 1.5){
+					this["T3level"+(i+2).toString()+stats[j]].innerHTML = "<b>"+stat+"</b>";
+				}
+				else{
+					this["T3level"+(i+2).toString()+stats[j]].innerHTML = stat;
+				}
 			}
 			else{
-				this["T3level"+(i+2).toString()+stats[j]].innerHTML = stat;
+				this["current"+stats[j]] += charGrowths.get(char)[j] / 100;
+				this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
+				if (this["current"+stats[j]] >= caps3.get(char)[j]){
+					this["current"+stats[j]] = caps3.get(char)[j];
+				}
+				let stat = this["current"+stats[j]];
+				if (this["current"+stats[j]] == caps3.get(char)[j]){
+					this["T3level"+(i+2).toString()+stats[j]].innerHTML = "<b>"+stat+"</b>";
+				}
+				else{
+					this["T3level"+(i+2).toString()+stats[j]].innerHTML = stat;
+				}
 			}
 		}
 	}
