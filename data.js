@@ -573,7 +573,7 @@ function updateTable(checked, sHP=36, sStr=20, sMag=5, sSkl=20, sSpd=20, sLck=20
 				stat = Math.min(stat, caps3.get(char)[i]) * 2;
 			}
 			else if ([1, 2, 3, 4, 6, 7].includes(i) && laguz.includes(char) && transformation.value == "Wildheart"){
-				stat = Math.floor(Math.min(stat, caps3.get(char)[i]) * 1.5);
+				stat = Math.floor(Math.min(stat, Math.floor(caps3.get(char)[i]) * 1.5));
 			}
 			else {
 				stat = Math.min(stat, caps3.get(char)[i]);
@@ -847,11 +847,11 @@ function updateTable(checked, sHP=36, sStr=20, sMag=5, sSkl=20, sSpd=20, sLck=20
 			else if ([1, 2, 3, 4, 6, 7].includes(j) && laguz.includes(char) && transformation.value == "Wildheart"){
 				this["current"+stats[j]] += charGrowths.get(char)[j] * 1.5 / 100;
 				this["current"+stats[j]] = Math.round(this["current"+stats[j]] * 100) / 100;
-				if (this["current"+stats[j]] >= caps3.get(char)[j] * 1.5){
-					this["current"+stats[j]] = caps3.get(char)[j] * 1.5;
+				if (this["current"+stats[j]] >= Math.floor(caps3.get(char)[j] * 1.5)){
+					this["current"+stats[j]] = Math.floor(caps3.get(char)[j] * 1.5);
 				}
 				let stat = this["current"+stats[j]];
-				if (this["current"+stats[j]] == caps3.get(char)[j] * 1.5){
+				if (this["current"+stats[j]] == Math.floor(caps3.get(char)[j] * 1.5)){
 					this["T3level"+(i+2).toString()+stats[j]].innerHTML = "<b>"+stat+"</b>";
 				}
 				else{
