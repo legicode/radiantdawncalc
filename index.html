@@ -1,0 +1,131 @@
+<!doctype html> 
+<html lang="en"> 
+	<head>
+		<meta charset="utf-8"> 
+		<title>Radiant Dawn stats calculator</title> 
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<meta name="google-site-verification" content="lUW7ntQ9G46pc1CGUx5YMmg3ReLNqKageKQ65JJ5BH4" />
+	</head>
+
+	<body>
+		<table id="main">
+			<tr><td id="header">
+				<a href="https://legicode.github.io/bindingbladecalc/">Binding Blade</a> <b>|</b>
+				<a href="https://legicode.github.io/blazingbladecalc/">Blazing Blade</a> <b>|</b>
+				<a href="https://legicode.github.io/sacredstonescalc/">Sacred Stones</a> <b>|</b>
+				<a href="https://legicode.github.io/pathofradiancecalc/">Path of Radiance</a> <b>|</b>
+				<b>Radiant Dawn</b><br />
+				<a href="https://legicode.github.io/awakeningcalc/">Awakening data</a> <b>|</b>
+				<a href="https://legicode.github.io/awakeningaverages/">Awakening averages</a>
+			</td></tr>
+
+			<tr><td id="intro">
+				<h3>Average stats calculator for Fire Emblem: Radiant Dawn</h3>
+				Developed by <a href="https://bsky.app/profile/homestar.bsky.social">legi</a>. Feel free to message suggestions or ideas.
+			</td></tr>
+
+			<tr><td class="calculator">
+				<h2>True hit calculator</h2>
+				Displayed hit rate: 
+				<select id="displayedHit" onChange="updateHit()"></select> &nbsp&nbsp
+				True hit rate: <b><span id="trueHit"></span></b><br />
+			</td></tr>
+
+			<tr><td class="calculator">
+				<h2>EXP calculator</h2>
+				<u><i>Level entry is calculated from a range of 1 to 60, adding 20 to displayed level per promotion.</i></u><br /><br />
+				Player level: 
+				<select id="playerLevel" onChange="updateEXP()"></select> &nbsp&nbsp
+				Enemy level: 
+				<select id="enemyLevel" onChange="updateEXP()"></select> &nbsp&nbsp
+				Difficulty: <select id="difficulty" onChange="updateEXP()">
+					<option value="easy">Easy</option>
+					<option value="normal">Normal</option>
+					<option value="hard">Hard</option>
+				</select><br /><br />
+				<b><u>Player</u></b>:&nbsp Paragon: <input type="checkbox" id="paragonEXP" onChange="updateEXP()"> &nbsp
+				Blossom: <input type="checkbox" id="blossomEXP" onChange="updateEXP()"> &nbsp
+				Laguz: <input type="checkbox" id="playerLaguz" onChange="updatePL()"> &nbsp
+				Transformed: <input type="checkbox" id="playerTransformed" onChange="updatePT()"><br /><br />
+				<b><u>Enemy</u></b>:&nbsp Killed: <input type="checkbox" id="killEXP" onChange="updateEXP()"> &nbsp
+				Boss: <input type="checkbox" id="bossEXP" onChange="updateEXP()"> &nbsp
+				Thief: <input type="checkbox" id="thiefEXP" onChange="updateEXP()"> &nbsp
+				Laguz: <input type="checkbox" id="enemyLaguz" onChange="updateEL()"> &nbsp
+				Transformed: <input type="checkbox" id="enemyTransformed" onChange="updateET()"><br /><br />
+				Experience: <b><span id="exp"></span></b><br />
+			</td></tr>
+
+			<tr><td class="table">
+				<h2>Average stats</h2>
+				<b>Character:</b> <select id="character" onChange="character2.value = this.value; updateCharacter()"></select> &nbsp&nbsp
+				<b>Promotion 1:</b> <select id="promoLevel1" onChange="promoLevel1B.value = this.value; updateTable()"></select> &nbsp&nbsp
+				<b>Promotion 2:</b> <select id="promoLevel2" onChange="promoLevel2B.value = this.value; updateTable()"></select> &nbsp&nbsp
+				<b>Laguz:</b> <select id="transformation" onChange="transformation2.value = this.value; updateTable()">
+					<option value="Base">Base</option>
+					<option value="Transformed" selected>Transformed</option>
+					<option value="Wildheart">Wildheart</option>
+				</select><br /><br />
+				<table class="statstable" id="growthsTable">
+					<tr>
+						<th class="levels">Level</th>
+						<th>HP</th>
+						<th>Str</th>
+						<th>Mag</th>
+						<th>Skl</th>
+						<th>Spd</th>
+						<th>Lck</th>
+						<th>Def</th>
+						<th>Res</th>
+						<th class="conmov">Con</th>
+						<th class="conmov">Mov</th>
+					</tr>
+					<tr>
+						<th class="levels">Transfers</th>
+						<th><input type="checkbox" id="transferHP" onChange="updateTable(transferHP.checked)"></th>
+						<th><input type="checkbox" id="transferSTR" onChange="updateTable(transferSTR.checked)"></th>
+						<th><input type="checkbox" id="transferMAG" onChange="updateTable(transferMAG.checked)"></th>
+						<th><input type="checkbox" id="transferSKL" onChange="updateTable(transferSKL.checked)"></th>
+						<th><input type="checkbox" id="transferSPD" onChange="updateTable(transferSPD.checked)"></th>
+						<th><input type="checkbox" id="transferLCK" onChange="updateTable(transferLCK.checked)"></th>
+						<th><input type="checkbox" id="transferDEF" onChange="updateTable(transferDEF.checked)"></th>
+						<th><input type="checkbox" id="transferRES" onChange="updateTable(transferRES.checked)"></th>
+						<th class="conmov">Ⅹ</th>
+						<th class="conmov">Ⅹ</th>
+					</tr>
+					<tr>
+						<th class="levels">Level</th>
+						<th>HP</th>
+						<th>Str</th>
+						<th>Mag</th>
+						<th>Skl</th>
+						<th>Spd</th>
+						<th>Lck</th>
+						<th>Def</th>
+						<th>Res</th>
+						<th class="conmov">Con</th>
+						<th class="conmov">Mov</th>
+					</tr>
+				</table><br />
+				<b>Character:</b> <select id="character2" onChange="character.value = this.value; updateCharacter()"></select> &nbsp&nbsp
+				<b>Promotion 1:</b> <select id="promoLevel1B" onChange="promoLevel1.value = this.value; updateTable()"></select> &nbsp&nbsp
+				<b>Promotion 2:</b> <select id="promoLevel2B" onChange="promoLevel2.value = this.value; updateTable()"></select> &nbsp&nbsp
+				<b>Laguz:</b> <select id="transformation2" onChange="transformation.value = this.value; updateTable()">
+					<option value="Base">Base</option>
+					<option value="Transformed" selected>Transformed</option>
+					<option value="Wildheart">Wildheart</option>
+				</select>
+			</td></tr>
+
+			<tr><td id="footer">
+				<a href="https://legicode.github.io/bindingbladecalc/">Binding Blade</a> <b>|</b>
+				<a href="https://legicode.github.io/blazingbladecalc/">Blazing Blade</a> <b>|</b>
+				<a href="https://legicode.github.io/sacredstonescalc/">Sacred Stones</a> <b>|</b>
+				<a href="https://legicode.github.io/pathofradiancecalc/">Path of Radiance</a> <b>|</b>
+				<b>Radiant Dawn</b><br />
+				<a href="https://legicode.github.io/awakeningcalc/">Awakening data</a> <b>|</b>
+				<a href="https://legicode.github.io/awakeningaverages/">Awakening averages</a>
+			</td></tr>
+		</table>
+		<script src="data.js"></script>
+	</body>
+</html>
